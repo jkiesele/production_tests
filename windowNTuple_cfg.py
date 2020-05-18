@@ -77,6 +77,10 @@ process.TFileService = cms.Service("TFileService", fileName = cms.string(
 # load and configure the windowInference module
 from RecoHGCal.GraphReco.windowNTupler_cfi import WindowNTupler
 process.WindowNTupler = WindowNTupler.clone()
+process.WindowNTupler.nEtaSegments = 1
+process.WindowNTupler.nPhiSegments = 1
+process.WindowNTupler.etaFrameWidth = 0.001
+process.WindowNTupler.phiFrameWidth = 0.001
 process.WindowNTuplerDefaultTruth = WindowNTupler.clone()
 
 process.hgcSimTruth = cms.EDProducer("HGCTruthProducer",
