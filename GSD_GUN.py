@@ -15,6 +15,24 @@ options.register("pileup", 0, VarParsing.multiplicity.singleton, VarParsing.varT
     "pileup")
 options.register("seed", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
     "random seed")
+options.register(
+    'EminFineTrack',
+    10000.,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Minimum energy in MeV for which secondary tracks in Calo will be saved"
+    )
+options.register(
+    'EminFinePhoton',
+    500.,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.float,
+    "Minimum energy in MeV for which secondary photons in Calo will be saved"
+    )
+options.register("doFineCalo", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+    "turn do fineCalo on/off")
+options.register("storeHGCBoundaryCross", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+    "turn do StoreHGCBoundarCross on/off")
 options.parseArguments()
 
 process.maxEvents.input = cms.untracked.int32(options.maxEvents)
@@ -60,11 +78,11 @@ process.generator = cms.EDProducer("FlatEtaRangeGunProducer",
 )
 
 # Options for saving fine hits
-process.g4SimHits.CaloSD.StoreHGCBoundaryCross = cms.bool(True)
-process.g4SimHits.CaloSD.UseFineCaloID = cms.bool(True)
-process.g4SimHits.CaloTrkProcessing.DoFineCalo = cms.bool(True)
-process.g4SimHits.CaloTrkProcessing.EminFineTrack = cms.double(10000)
-process.g4SimHits.CaloTrkProcessing.EminFinePhoton = cms.double(500)
+process.g4SimHits.CaloSD.StoreHGCBoundaryCross = cms.bool(bool(options.storeHGCBoundaryCross))
+process.g4SimHits.CaloSD.UseFineCaloID = cms.bool(bool(options.storeHGCBoundaryCross+options.doFineCalo))
+process.g4SimHits.CaloTrkProcessing.DoFineCalo = cms.bool(bool(options.doFineCalo))
+process.g4SimHits.CaloTrkProcessing.EminFineTrack = cms.double(options.EminFineTrack)
+process.g4SimHits.CaloTrkProcessing.EminFinePhoton = cms.double(options.EminFinePhoton)
 
 
 #load and configure the appropriate pileup modules
