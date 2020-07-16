@@ -29,7 +29,7 @@ process.RandomNumberGeneratorService.mix.initialSeed = cms.untracked.uint32(seed
 process.source.firstLuminosityBlock = cms.untracked.uint32(seed)
 
 # Output definition
-process.FEVTDEBUGHLToutput.fileName = cms.untracked.string(
+process.FEVTDEBUGoutput.fileName = cms.untracked.string(
     options.__getattr__("outputFile", noTags=True))
 
 # helper
