@@ -21,20 +21,19 @@ process.hgcTruthProducer = cms.EDProducer("HGCTruthProducer",
 )
 process.recosim_step += process.hgcTruthProducer
 
+#process.dump=cms.EDAnalyzer('EventContentAnalyzer')
+#process.recosim_step += process.dump
+
 # Input source
 process.source.fileNames = cms.untracked.vstring(options.inputFiles)
 
 # Output definition
-process.FEVTDEBUGHLToutput.fileName = cms.untracked.string(
+process.FEVTDEBUGoutput.fileName = cms.untracked.string(
     options.__getattr__("outputFile", noTags=True))
-process.FEVTDEBUGHLToutput.outputCommands.append("keep *_HGCTruthProducer_*_*")
-process.DQMoutput.fileName = cms.untracked.string(options.outputFileDQM)
+process.FEVTDEBUGoutput.outputCommands.append("keep *_HGCTruthProducer_*_*")
+process.FEVTDEBUGoutput.outputCommands.append("keep *_simSiPixelDigis_*_*")
 
-# Customisation from command line
-# process.hgcalLayerClusters.minClusters = cms.uint32(3)
-#those below are all now the default values - just there to illustrate what can be customised
-#process.hgcalLayerClusters.dependSensor = cms.bool(True)
-#process.hgcalLayerClusters.ecut = cms.double(3.) #multiple of sigma noise if dependSensor is true
-#process.hgcalLayerClusters.kappa = cms.double(9.) #multiple of sigma noise if dependSensor is true
-#process.hgcalLayerClusters.multiclusterRadii = cms.vdouble(2.,2.,2.) #(EE,FH,BH), in com
-#process.hgcalLayerClusters.deltac = cms.vdouble(2.,2.,2.) #(EE,FH,BH), in cm
+
+if hasattr(process, "DQMoutput"):
+    process.DQMoutput.fileName = cms.untracked.string(options.outputFileDQM)
+

@@ -29,7 +29,7 @@ options.register(
     VarParsing.varType.float,
     "Minimum energy in MeV for which secondary photons in Calo will be saved"
     )
-options.register("doFineCalo", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+options.register("doFineCalo", 0, VarParsing.multiplicity.singleton, VarParsing.varType.int,
     "turn do fineCalo on/off")
 options.register("storeHGCBoundaryCross", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
     "turn do StoreHGCBoundarCross on/off")
@@ -47,7 +47,7 @@ process.RandomNumberGeneratorService.mix.initialSeed = cms.untracked.uint32(seed
 process.source.firstLuminosityBlock = cms.untracked.uint32(seed)
 
 # Output definition
-process.FEVTDEBUGHLToutput.fileName = cms.untracked.string(
+process.FEVTDEBUGoutput.fileName = cms.untracked.string(
     options.__getattr__("outputFile", noTags=True))
 
 # helper
@@ -79,6 +79,7 @@ process.generator = cms.EDProducer("FlatEtaRangeGunProducer",
 
 # Options for saving fine hits
 process.g4SimHits.CaloSD.StoreHGCBoundaryCross = cms.bool(bool(options.storeHGCBoundaryCross))
+# Seems to be an interplay between hgcboundaryCross and fineCaloID
 process.g4SimHits.CaloSD.UseFineCaloID = cms.bool(bool(options.storeHGCBoundaryCross+options.doFineCalo))
 process.g4SimHits.CaloTrkProcessing.DoFineCalo = cms.bool(bool(options.doFineCalo))
 process.g4SimHits.CaloTrkProcessing.EminFineTrack = cms.double(options.EminFineTrack)
@@ -98,3 +99,9 @@ if options.pileup > 0:
     ])
 else:
     process.load("SimGeneral.MixingModule.mixNoPU_cfi")
+    process.mix.digitizers = cms.PSet(process.theDigitizersValid)
+    # I don't think this matters, but just to be safe...
+    process.mix.bunchspace = cms.int32(25)
+    process.mix.minBunch = cms.int32(-3)
+    process.mix.maxBunch = cms.int32(3)
+
