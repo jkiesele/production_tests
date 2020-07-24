@@ -80,29 +80,10 @@ from RecoHGCal.GraphReco.windowNTupler_cfi import WindowNTupler
 process.WindowNTupler = WindowNTupler.clone()
 process.WindowNTuplerDefaultTruth = WindowNTupler.clone()
 
-from SimTracker.TrackAssociatorProducers.trackAssociatorByHits_cfi import trackAssociatorByHits
-process.trackAssociatorByHits = trackAssociatorByHits
 
 process.hgcSimTruth = cms.EDProducer("HGCTruthProducer",
 )
 
-###
-#
-
-
-
-#process.trackTPmatch = cms.EDProducer("TrackAssociatorEDProducer",
-#    associator = cms.InputTag('trackAssociatorByHits'),
-#    label_tp = cms.InputTag("mix","MergedTrackTruth"),
-#    label_tr = cms.InputTag("generalTracks"),
-#    ignoremissingtrackcollection=cms.untracked.bool(False)
-#)
-#
-#process.load("SimGeneral.TrackingAnalysis.simHitTPAssociation_cfi")
-
-#
-#
-###
 
 process.WindowNTupler.simClusters = "hgcSimTruth"
 

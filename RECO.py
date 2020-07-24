@@ -21,6 +21,13 @@ process.hgcTruthProducer = cms.EDProducer("HGCTruthProducer",
 )
 process.recosim_step += process.hgcTruthProducer
 
+
+process.load("SimTracker.TrackAssociation.trackingParticleRecoTrackAsssociation_cfi")
+
+process.recosim_step += process.trackingParticleRecoTrackAsssociation
+
+
+
 #process.dump=cms.EDAnalyzer('EventContentAnalyzer')
 #process.recosim_step += process.dump
 
@@ -30,8 +37,10 @@ process.source.fileNames = cms.untracked.vstring(options.inputFiles)
 # Output definition
 process.FEVTDEBUGoutput.fileName = cms.untracked.string(
     options.__getattr__("outputFile", noTags=True))
+process.FEVTDEBUGoutput.outputCommands.append("keep *_trackingParticleRecoTrackAsssociation_*_*")
+process.FEVTDEBUGoutput.outputCommands.append("keep *_MergedTrackTruth_*_*")
+
 process.FEVTDEBUGoutput.outputCommands.append("keep *_HGCTruthProducer_*_*")
-process.FEVTDEBUGoutput.outputCommands.append("keep *_simSiPixelDigis_*_*")
 
 
 if hasattr(process, "DQMoutput"):
