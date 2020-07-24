@@ -37,6 +37,7 @@ process.source.fileNames = cms.untracked.vstring(options.inputFiles)
 # Output definition
 process.FEVTDEBUGoutput.fileName = cms.untracked.string(
     options.__getattr__("outputFile", noTags=True))
+process.FEVTDEBUGoutput.outputCommands.append("keep *_*G4*_*_*")
 process.FEVTDEBUGoutput.outputCommands.append("keep *_trackingParticleRecoTrackAsssociation_*_*")
 process.FEVTDEBUGoutput.outputCommands.append("keep *_MergedTrackTruth_*_*")
 

@@ -50,6 +50,8 @@ process.source.firstLuminosityBlock = cms.untracked.uint32(seed)
 process.FEVTDEBUGoutput.fileName = cms.untracked.string(
     options.__getattr__("outputFile", noTags=True))
 
+process.FEVTDEBUGoutput.outputCommands.append("keep *_*G4*_*_*")
+
 # helper
 def calculate_rho(z, eta):
     return z * math.tan(2 * math.atan(math.exp(-eta)))
