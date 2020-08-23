@@ -50,6 +50,8 @@ process.source.firstLuminosityBlock = cms.untracked.uint32(seed)
 process.FEVTDEBUGoutput.fileName = cms.untracked.string(
     options.__getattr__("outputFile", noTags=True))
 
+process.FEVTDEBUGoutput.outputCommands.append("keep *_*G4*_*_*")
+
 # helper
 def calculate_rho(z, eta):
     return z * math.tan(2 * math.atan(math.exp(-eta)))
@@ -59,7 +61,7 @@ process.generator = cms.EDProducer("FlatEtaRangeGunProducer",
     # particle ids
     particleIDs=cms.vint32(22, 22, 11,-11,211,-211,13,-13),
     # max number of particles to shoot at a time
-    nParticles=cms.int32(1),
+    nParticles=cms.int32(10),
     # shoot exactly the particles defined in particleIDs in that order
     exactShoot=cms.bool(False),
     # randomly shoot [1, nParticles] particles, each time randomly drawn from particleIDs
