@@ -80,15 +80,11 @@ from RecoHGCal.GraphReco.windowNTupler_cfi import WindowNTupler
 process.WindowNTupler = WindowNTupler.clone()
 process.WindowNTuplerDefaultTruth = WindowNTupler.clone()
 
-process.hgcSimTruth = cms.EDProducer("HGCTruthProducer",
-)
-
 process.WindowNTupler.simClusters = "hgcSimTruth"
 
 process.WindowNTupler.nEtaSegments=cms.uint32(2)
 process.WindowNTupler.nPhiSegments=cms.uint32(4)
 
-process.hgcSimTruthSequence = cms.Sequence(process.hgcSimTruth)
 process.dump=cms.EDAnalyzer('EventContentAnalyzer')
 # define the path to run
-process.p = cms.Path(process.hgcSimTruthSequence * process.WindowNTupler) # * process.WindowNTuplerDefaultTruth)
+process.p = cms.Path(process.WindowNTupler) # * process.WindowNTuplerDefaultTruth)
