@@ -15,18 +15,26 @@ options.parseArguments()
 
 process.maxEvents.input = cms.untracked.int32(options.maxEvents)
 
-# append the HGCTruthProducer to the recosim step
-process.hgcTruthProducer = cms.EDProducer("HGCTruthProducer",
-    # options
-)
-process.recosim_step += process.hgcTruthProducer
-
-
 process.load("SimTracker.TrackAssociation.trackingParticleRecoTrackAsssociation_cfi")
+# append the HGCTruthProducer to the recosim step
+process.hgcSimTruth = cms.EDProducer("HGCTruthProducer",
+)
+process.trackingParticleMergedSCAssociation = cms.EDProducer("TrackingParticleSimClusterAssociationProducer",
+    simClusters = cms.InputTag("mix:MergedCaloTruth"),
+    trackingParticles= cms.InputTag("mix:MergedTrackTruth")
 
-process.recosim_step += process.trackingParticleRecoTrackAsssociation
+)
 
+process.trackingParticleSimClusterAssociation = cms.EDProducer("TrackingParticleSimClusterAssociationProducer",
+    #simClusters = cms.InputTag("mix:MergedCaloTruth"),
+    simClusters = cms.InputTag("hgcSimTruth"),
+    trackingParticles= cms.InputTag("mix:MergedTrackTruth")
 
+)
+process.recosim_step *= process.hgcSimTruth
+process.recosim_step *= process.trackingParticleRecoTrackAsssociation
+process.recosim_step *= process.trackingParticleSimClusterAssociation
+process.recosim_step *= process.trackingParticleMergedSCAssociation
 
 #process.dump=cms.EDAnalyzer('EventContentAnalyzer')
 #process.recosim_step += process.dump
@@ -40,9 +48,9 @@ process.FEVTDEBUGoutput.fileName = cms.untracked.string(
 process.FEVTDEBUGoutput.outputCommands.append("keep *_*G4*_*_*")
 process.FEVTDEBUGoutput.outputCommands.append("keep *_trackingParticleRecoTrackAsssociation_*_*")
 process.FEVTDEBUGoutput.outputCommands.append("keep *_MergedTrackTruth_*_*")
-
-process.FEVTDEBUGoutput.outputCommands.append("keep *_HGCTruthProducer_*_*")
-
+process.FEVTDEBUGoutput.outputCommands.append("keep *_hgcSimTruth_*_*")
+process.FEVTDEBUGoutput.outputCommands.append("keep *_trackingParticleSimClusterAssociation_*_*")
+process.FEVTDEBUGoutput.outputCommands.append("keep *_trackingParticleMergedSCAssociation_*_*")
 
 if hasattr(process, "DQMoutput"):
     process.DQMoutput.fileName = cms.untracked.string(options.outputFileDQM)
