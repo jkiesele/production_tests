@@ -22,7 +22,7 @@ process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.maxEvents = cms.untracked.PSet(
-    input = cms.untracked.int32(1),
+    input = cms.untracked.int32(-1),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
 
@@ -80,7 +80,6 @@ process.NANOAODSIMoutput = cms.OutputModule("NanoAODOutputModule",
 )
 
 process.NANOAODSIMoutput.outputCommands.remove("keep edmTriggerResults_*_*_*")
-print(process.NANOAODSIMoutput.outputCommands)
 
 # Additional output definition
 
