@@ -15,24 +15,10 @@ options.register("pileup", 0, VarParsing.multiplicity.singleton, VarParsing.varT
     "pileup")
 options.register("seed", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
     "random seed")
-options.register(
-    'EminFineTrack',
-    10000.,
-    VarParsing.multiplicity.singleton,
-    VarParsing.varType.float,
-    "Minimum energy in MeV for which secondary tracks in Calo will be saved"
-    )
-options.register(
-    'EminFinePhoton',
-    500.,
-    VarParsing.multiplicity.singleton,
-    VarParsing.varType.float,
-    "Minimum energy in MeV for which secondary photons in Calo will be saved"
-    )
-options.register("doFineCalo", 0, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+options.register("nThreads", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+    "number of threads")
+options.register("doFineCalo", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
     "turn do fineCalo on/off")
-options.register("storeHGCBoundaryCross", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
-    "turn do StoreHGCBoundarCross on/off")
 options.parseArguments()
 
 process.maxEvents.input = cms.untracked.int32(options.maxEvents)
@@ -51,6 +37,7 @@ process.FEVTDEBUGoutput.fileName = cms.untracked.string(
     options.__getattr__("outputFile", noTags=True))
 
 process.FEVTDEBUGoutput.outputCommands.append("keep *_*G4*_*_*")
+process.FEVTDEBUGoutput.outputCommands.append("keep SimClustersedmAssociation_mix_*_*")
 
 # helper
 def calculate_rho(z, eta):
@@ -79,14 +66,17 @@ process.generator = cms.EDProducer("FlatEtaRangeGunProducer",
     debug=cms.untracked.bool(True),
 )
 
-# Options for saving fine hits
-process.g4SimHits.CaloSD.StoreHGCBoundaryCross = cms.bool(bool(options.storeHGCBoundaryCross))
-# Seems to be an interplay between hgcboundaryCross and fineCaloID
-process.g4SimHits.CaloSD.UseFineCaloID = cms.bool(bool(options.storeHGCBoundaryCross+options.doFineCalo))
-process.g4SimHits.CaloTrkProcessing.DoFineCalo = cms.bool(bool(options.doFineCalo))
-process.g4SimHits.CaloTrkProcessing.EminFineTrack = cms.double(options.EminFineTrack)
-process.g4SimHits.CaloTrkProcessing.EminFinePhoton = cms.double(options.EminFinePhoton)
+fineCalo = bool(options.doFineCalo)
+print("Do fine calo", fineCalo)
+process.g4SimHits.CaloSD.DoFineCalo = fineCalo
+process.g4SimHits.CaloTrkProcessing.DoFineCalo = fineCalo
+process.g4SimHits.TrackingAction.DoFineCalo = fineCalo
 
+process.options.numberOfThreads=cms.untracked.uint32(options.nThreads)
+
+process.hgcSimTruth = cms.EDProducer("HGCTruthProducer", rechit)
+
+process.simulation_step *= process.hgcSimTruth
 
 #load and configure the appropriate pileup modules
 if options.pileup > 0:
