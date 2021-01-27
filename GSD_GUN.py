@@ -38,6 +38,7 @@ process.FEVTDEBUGoutput.fileName = cms.untracked.string(
 
 process.FEVTDEBUGoutput.outputCommands.append("keep *_*G4*_*_*")
 process.FEVTDEBUGoutput.outputCommands.append("keep SimClustersedmAssociation_mix_*_*")
+process.FEVTDEBUGoutput.outputCommands.append("keep CaloParticlesedmAssociation_mix_*_*")
 
 # helper
 def calculate_rho(z, eta):

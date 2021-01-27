@@ -104,8 +104,11 @@ associatePatAlgosToolsTask(process)
 # customisation of the process.
 
 # End of customisation functions
-from PhysicsTools.NanoAOD.nanoHGCML_cff import customizeReco,customizeNoSimClusters
-#process = customizeNoSimClusters(process)
+from PhysicsTools.NanoAOD.nanoHGCML_cff import customizeNoMergedCaloTruth
+# Uncomment if you didn't schedule SimClusters/CaloParticles
+# process = customizeNoMergedCaloTruth(process)
+# merged simclusters (turn off if you aren't running through PEPR)
+process = customizeMergedSimClusters(process)
 
 # Customisation from command line
 
