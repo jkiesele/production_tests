@@ -74,10 +74,6 @@ process.g4SimHits.TrackingAction.DoFineCalo = fineCalo
 
 process.options.numberOfThreads=cms.untracked.uint32(options.nThreads)
 
-process.hgcSimTruth = cms.EDProducer("HGCTruthProducer", rechit)
-
-process.simulation_step *= process.hgcSimTruth
-
 #load and configure the appropriate pileup modules
 if options.pileup > 0:
     process.load("SimGeneral.MixingModule.mix_POISSON_average_cfi")
