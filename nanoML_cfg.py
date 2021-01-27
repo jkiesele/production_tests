@@ -102,12 +102,12 @@ from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 
 # customisation of the process.
-from PhysicsTools.NanoAOD.nanoHGCML_cff import customizeReco
+from PhysicsTools.NanoAOD.nanoHGCML_cff import customizeReco,customizeMergedSimClusters
 process = customizeReco(process)
 # Uncomment if you didn't schedule SimClusters/CaloParticles
 # process = customizeNoMergedCaloTruth(process)
 # merged simclusters (turn off if you aren't running through PEPR)
-process = customizeMergedSimClusters(process)
+# process = customizeMergedSimClusters(process)
 
 # End of customisation functions
 
