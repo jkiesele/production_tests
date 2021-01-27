@@ -66,12 +66,6 @@ process.generator = cms.EDProducer("FlatEtaRangeGunProducer",
     debug=cms.untracked.bool(True),
 )
 
-fineCalo = bool(options.doFineCalo)
-print("Do fine calo", fineCalo)
-process.g4SimHits.CaloSD.DoFineCalo = fineCalo
-process.g4SimHits.CaloTrkProcessing.DoFineCalo = fineCalo
-process.g4SimHits.TrackingAction.DoFineCalo = fineCalo
-
 process.options.numberOfThreads=cms.untracked.uint32(options.nThreads)
 
 #load and configure the appropriate pileup modules
