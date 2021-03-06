@@ -11,6 +11,8 @@ options.setDefault('inputFiles', "file://partGun_PDGid22_x96_Pt1.0To100.0_GSD_1.
 options.setDefault('maxEvents', -1)
 options.register('outputFileDQM', 'file:partGun_PDGid22_x96_Pt1.0To100.0_DQM_1.root',
     VarParsing.multiplicity.singleton, VarParsing.varType.string, 'path to the DQM output file')
+options.register("nThreads", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+    "number of threads")
 options.parseArguments()
 
 process.maxEvents.input = cms.untracked.int32(options.maxEvents)
@@ -54,6 +56,8 @@ process.FEVTDEBUGoutput.outputCommands.extend(["keep *_MergedTrackTruth_*_*",
     "keep recoPFRecHits_*_*_*", 
     "keep *_hgcSimTruth_*_*",
 ])
+
+process.options.numberOfThreads=cms.untracked.uint32(options.nThreads)
 
 if hasattr(process, "DQMoutput"):
     process.DQMoutput.fileName = cms.untracked.string(options.outputFileDQM)

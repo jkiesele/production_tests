@@ -107,7 +107,7 @@ process = customizeReco(process)
 # Uncomment if you didn't schedule SimClusters/CaloParticles
 # process = customizeNoMergedCaloTruth(process)
 # merged simclusters (turn off if you aren't running through PEPR)
-# process = customizeMergedSimClusters(process)
+process = customizeMergedSimClusters(process)
 
 # End of customisation functions
 

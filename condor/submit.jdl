@@ -1,0 +1,21 @@
+Universe             = vanilla
+Executable           = ../run_nano.sh
+GetEnv               = true
+
+CPUS = 4
+
+ShouldTransferFiles  = no
+request_memory       = $(CPUS)*2000
+request_disk         = 2048000
+request_cpus         = $(CPUS)
+use_x509userproxy = True
+# stop jobs from running if they blow up in size or memory
+periodic_hold        = (DiskUsage/1024 > 10.0*2000 ||  ImageSize/1024 > RequestMemory*2)
+
++JobFlavour = "longlunch"
++AccountingGroup = "group_u_CMST3.all"
+
+Arguments            = 4 $(Process) Gun80Part_CHEPDef $(CPUS)
+output               = logs/NanoML_$(Process).out
+error                = logs/NanoML_$(Process).err
+Log                  = logs/NanoML_$(Process).log

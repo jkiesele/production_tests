@@ -5,7 +5,7 @@ import math
 
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
-from reco_prodtools.templates.GSD_fragment import process
+from reco_prodtools.templates.NanoML_fragment import process
 
 # option parsing
 options = VarParsing('python')
@@ -32,24 +32,11 @@ process.RandomNumberGeneratorService.mix.initialSeed = cms.untracked.uint32(seed
 # Input source
 process.source.firstLuminosityBlock = cms.untracked.uint32(seed)
 
-# Output definition
-process.FEVTDEBUGoutput.fileName = cms.untracked.string(
-    options.__getattr__("outputFile", noTags=True))
-
-process.FEVTDEBUGoutput.outputCommands.append("keep *_*G4*_*_*")
-process.FEVTDEBUGoutput.outputCommands.append("keep SimClustersedmAssociation_mix_*_*")
-process.FEVTDEBUGoutput.outputCommands.append("keep CaloParticlesedmAssociation_mix_*_*")
-
-# helper
-def calculate_rho(z, eta):
-    return z * math.tan(2 * math.atan(math.exp(-eta)))
-
-
 process.generator = cms.EDProducer("FlatEtaRangeGunProducer",
     # particle ids
     particleIDs=cms.vint32(22, 22, 11,-11,211,-211,13,-13, 310, 130, 111, 311, 321, -321),
     # max number of particles to shoot at a time
-    nParticles=cms.int32(50),
+    nParticles=cms.int32(80),
     # shoot exactly the particles defined in particleIDs in that order
     exactShoot=cms.bool(False),
     # randomly shoot [1, nParticles] particles, each time randomly drawn from particleIDs
@@ -87,4 +74,3 @@ else:
     process.mix.bunchspace = cms.int32(25)
     process.mix.minBunch = cms.int32(-3)
     process.mix.maxBunch = cms.int32(3)
-
