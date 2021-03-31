@@ -15,15 +15,19 @@ if [ $# -gt 3 ]; then
     numThreads=$4
 fi
 
-THISDIR=`pwd`
-#cmsswdir="/afs/cern.ch/user/k/kelong/work/ML4Reco/CMSSW_11_3_0_pre3/src"
-cmsswdir="/data/home/kelong/work/ML4Reco/CMSSW_11_3_0_pre3/src/"
-cd $cmsswdir
+pushd /afs/cern.ch/user/k/kelong/work/ML4Reco/CMSSW_11_3_0_pre3/src
 eval `scramv1 runtime -sh`
-cd $THISDIR
+popd
 
-scriptdir="${cmsswdir}/production_tests"
+gsd=${finalfile/.root/_GSD.root}
+recoout=${finalfile/.root/_RECO.root}
 
-cmsRun $scriptdir/nanoHGC_cfg.py seed=$inputnumber outputFile="file:$finalfile" maxEvents=$maxEvents nThreads=$numThreads
+cmsRun GSD_GUN.py seed=$inputnumber outputFile="file:$gsd" maxEvents=$maxEvents nThreads=$numThreads
+# Don't fully understand when it sticks numevent ont the end
+if [ ! -f $gsd ]; then
+    gsd=${finalfile/.root/_GSD_numEvent$1.root}
+fi
+cmsRun RECO.py inputFiles="file:$gsd" outputFile=$recoout nThreads=$numThreads
+cmsRun nanoML_cfg.py inputFiles=file:$recoout outputFile=file:$finalfile nThreads=$numThreads
 echo "${inputnumber} done"
-xrdcp ${finalfile/.root/_numEvent$2.root} $eosoutdir/$finalfile 
+xrdcp $finalfile $eosoutdir/$finalfile 

@@ -10,6 +10,8 @@ from FWCore.ParameterSet.VarParsing import VarParsing
 process = cms.Process('NANO')
 options = VarParsing('python')
 options.setDefault('outputFile', 'testNanoML.root')
+options.register("nThreads", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+    "number of threads")
 options.parseArguments()
 
 # import of standard configurations
@@ -21,7 +23,7 @@ process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.Geometry.GeometryExtended2026D49Reco_cff')
 process.load('Configuration.Geometry.GeometryExtended2026D49_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
-process.load('PhysicsTools.NanoAOD.nanoHGCML_cff')
+process.load('DPGAnalysis.HGCalNanoAOD.nanoHGCML_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
@@ -29,6 +31,7 @@ process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
+process.options.numberOfThreads=cms.untracked.uint32(options.nThreads)
 
 # Input source
 process.source = cms.Source("PoolSource",
@@ -102,7 +105,7 @@ from PhysicsTools.PatAlgos.tools.helpers import associatePatAlgosToolsTask
 associatePatAlgosToolsTask(process)
 
 # customisation of the process.
-from PhysicsTools.NanoAOD.nanoHGCML_cff import customizeReco,customizeMergedSimClusters
+from DPGAnalysis.HGCalNanoAOD.nanoHGCML_cff import customizeReco,customizeMergedSimClusters
 process = customizeReco(process)
 # Uncomment if you didn't schedule SimClusters/CaloParticles
 # process = customizeNoMergedCaloTruth(process)
