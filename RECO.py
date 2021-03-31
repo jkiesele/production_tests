@@ -31,12 +31,33 @@ process.trackingParticleSimClusterAssociation = cms.EDProducer("TrackingParticle
     trackingParticles= cms.InputTag("mix:MergedTrackTruth")
 
 )
-# If you want to run the associations or SC merging
-# process.recosim_step *= process.hgcSimTruth
-# process.recosim_step *= process.trackingParticleRecoTrackAsssociation
-# process.recosim_step *= process.trackingParticleSimClusterAssociation
-# process.recosim_step *= process.trackingParticleMergedSCAssociation
 
+# If you want to run the associations or SC merging
+from SimCalorimetry.HGCalSimProducers.hgcHitAssociation_cfi import lcAssocByEnergyScoreProducer, scAssocByEnergyScoreProducer
+from SimCalorimetry.HGCalAssociatorProducers.LCToCPAssociation_cfi import layerClusterCaloParticleAssociation as layerClusterCaloParticleAssociationProducer
+from SimCalorimetry.HGCalAssociatorProducers.LCToSCAssociation_cfi import layerClusterSimClusterAssociation as layerClusterSimClusterAssociationProducer
+
+process.lcAssocByEnergyScoreProducer = lcAssocByEnergyScoreProducer
+process.layerClusterCaloParticleAssociationProducer = layerClusterSimClusterAssociationProducer
+process.scAssocByEnergyScoreProducer = scAssocByEnergyScoreProducer
+process.layerClusterSimClusterAssociationProducer = layerClusterCaloParticleAssociationProducer
+
+process.hgcalAssociators = cms.Task(process.lcAssocByEnergyScoreProducer, process.layerClusterCaloParticleAssociationProducer,
+    process.scAssocByEnergyScoreProducer, process.layerClusterSimClusterAssociationProducer,
+)
+
+process.assoc = cms.Sequence(process.hgcalAssociators)
+
+process.recosim_step *= process.assoc
+
+process.hgcRecHitsToSimClusters = cms.EDProducer("SimClusterRecHitAssociationProducer",
+    caloRecHits = cms.VInputTag("HGCalRecHit:HGCEERecHits",
+        "HGCalRecHit:HGCHEFRecHits", "HGCalRecHit:HGCHEBRecHits",
+    ),
+    simClusters = cms.InputTag("mix:MergedCaloTruth"),
+)
+
+process.recosim_step *= process.hgcRecHitsToSimClusters
 #process.dump=cms.EDAnalyzer('EventContentAnalyzer')
 #process.recosim_step += process.dump
 
@@ -51,10 +72,15 @@ process.FEVTDEBUGoutput.outputCommands.extend(["keep *_MergedTrackTruth_*_*",
     "keep *_trackingParticleRecoTrackAsssociation_*_*", 
     "keep *_trackingParticleSimClusterAssociation_*_*",
     "keep *_trackingParticleMergedSCAssociation_*_*", 
+    "keep *_hgcRecHitsToSimClusters_*_*", 
     "keep SimClustersedmAssociation_mix_*_*", "keep CaloParticlesedmAssociation_mix_*_*", 
     "keep *_pfParticles_*_*",
     "keep recoPFRecHits_*_*_*", 
     "keep *_hgcSimTruth_*_*",
+    "keep *_lcAssocByEnergyScoreProcer_*_*",
+    "keep *_layerClusterCaloParticleAssociationProducer_*_*",
+    "keep *_scAssocByEnergyScoreProducer_*_*",
+    "keep *_layerClusterSimClusterAssociationProducer_*_*",
 ])
 
 process.options.numberOfThreads=cms.untracked.uint32(options.nThreads)
