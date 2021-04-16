@@ -18,6 +18,8 @@ options.register("seed", 1, VarParsing.multiplicity.singleton, VarParsing.varTyp
     "random seed")
 options.register("nThreads", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
     "number of threads")
+options.register("nParticles", 10, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+    "number of particles in gun")
 options.parseArguments()
 
 process.maxEvents.input = cms.untracked.int32(options.maxEvents)
@@ -48,7 +50,7 @@ process.generator = cms.EDProducer("FlatEtaRangeGunProducer",
     # particle ids
     particleIDs=cms.vint32(22, 22, 11,-11,211,-211,13,-13, 310, 130, 111, 311, 321, -321),
     # max number of particles to shoot at a time
-    nParticles=cms.int32(50),
+    nParticles=cms.int32(options.nParticles),
     # shoot exactly the particles defined in particleIDs in that order
     exactShoot=cms.bool(False),
     # randomly shoot [1, nParticles] particles, each time randomly drawn from particleIDs
