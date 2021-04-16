@@ -2,7 +2,7 @@ Universe             = vanilla
 Executable           = ../run_nano.sh
 GetEnv               = true
 
-CPUS = 4
+CPUS = 8
 
 ShouldTransferFiles  = yes
 transfer_input_files = ../nanoML_cfg.py,../GSD_GUN.py,../RECO.py
@@ -17,8 +17,9 @@ use_x509userproxy = True
 
 # Use this to add new files
 Offset=200
+NumEvents=16
 
-Arguments            = 50 $(Seed)+$(Offset) Gun80Part_CHEPDef $(CPUS)
-output               = logs/NanoML_$(Seed)_$(Offset).out
-error                = logs/NanoML_$(Seed)_$(Offset).err
-Log                  = logs/NanoML_$(Seed)_$(Offset).log
+Arguments            = $(NumEvents) $(Process)+$(Offset) Gun50Part_CHEPDef $(CPUS) 
+output               = logs50Fine/NanoML_$(Process)_$(Offset).out
+error                = logs50Fine/NanoML_$(Process)_$(Offset).err
+Log                  = logs50Fine/NanoML_$(Process)_$(Offset).log

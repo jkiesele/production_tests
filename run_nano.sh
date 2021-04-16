@@ -1,7 +1,8 @@
 #!/bin/bash
 
 maxEvents=$1
-inputnumber=$2
+declare -i inputnumber=$2
+echo "Processing $maxEvents events for seed $inputnumber"
 
 finalfile="${inputnumber}_nanoML.root"
 outdir="/eos/cms/store/user/kelong/ML4Reco/$3"
