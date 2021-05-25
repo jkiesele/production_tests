@@ -18,8 +18,9 @@ use_x509userproxy = True
 # Use this to add new files
 Offset=200
 NumEvents=16
+NPart=50
 
-Arguments            = $(NumEvents) $(Process)+$(Offset) Gun50Part_CHEPDef $(CPUS) 
-output               = logs50Fine/NanoML_$(Process)_$(Offset).out
-error                = logs50Fine/NanoML_$(Process)_$(Offset).err
-Log                  = logs50Fine/NanoML_$(Process)_$(Offset).log
+Arguments            = $(NumEvents) $(Process)+$(Offset) Gun$(NPart)Part_CHEPDef_NoPropagate $(NPart) $(CPUS) 
+output               = logs50NoPropagate/NanoML_$(Process)_$(Offset).out
+error                = logs50NoPropagate/NanoML_$(Process)_$(Offset).err
+Log                  = logs50NoPropagate/NanoML_$(Process)_$(Offset).log

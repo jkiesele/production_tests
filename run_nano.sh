@@ -2,7 +2,6 @@
 
 maxEvents=$1
 declare -i inputnumber=$2
-echo "Processing $maxEvents events for seed $inputnumber"
 
 finalfile="${inputnumber}_nanoML.root"
 outdir="/eos/cms/store/user/kelong/ML4Reco/$3"
@@ -11,9 +10,17 @@ if [ ! -d $outdir ]; then
     mkdir $outdir
 fi
 
-numThreads=1
+nParticles=10
 if [ $# -gt 3 ]; then
-    numThreads=$4
+    nParticles=$4
+fi
+
+echo "Processing $maxEvents events for seed $inputnumber"
+echo "    Gun of $nParticles particles"
+
+numThreads=1
+if [ $# -gt 4 ]; then
+    numThreads=$5
 fi
 
 pushd /afs/cern.ch/user/k/kelong/work/ML4Reco/CMSSW_11_3_0_pre3/src
@@ -23,7 +30,7 @@ popd
 gsd=${finalfile/.root/_GSD.root}
 recoout=${finalfile/.root/_RECO.root}
 
-cmsRun GSD_GUN.py seed=$inputnumber outputFile="file:$gsd" maxEvents=$maxEvents nThreads=$numThreads
+cmsRun GSD_GUN.py seed=$inputnumber outputFile="file:$gsd" maxEvents=$maxEvents nThreads=$numThreads nParticles=$nParticles
 # Don't fully understand when it sticks numevent ont the end
 if [ ! -f $gsd ]; then
     gsd=${finalfile/.root/_GSD_numEvent$1.root}
