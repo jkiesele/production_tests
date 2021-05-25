@@ -2,15 +2,16 @@
 
 Simple productions scripts based on the HGCAL Reco prod tools: https://github.com/CMS-HGCAL/reco-prodtools
 
-A simple recipe in CMSSW_11_2_0_pre9 is.
+A simple recipe in CMSSW_11_3_0_pre3 is.
 
 NOTE: The NanoML ntuples require either pepr_CMSSW_11_3_0_pre2, or CMSSW_11_3_0_pre2 with cms-merge-topic kdlong:nanoML
 
 ```shell
-cmsrel CMSSW_11_2_0_pre9
-cd CMSSW_11_2_0_pre9/src
+version=CMSSW_11_3_0_pre3
+cmsrel $version
+cd $version/src
 git cms-init
-git cms-merge-topic cms-pepr:pepr_CMSSW_11_2_0_pre9
+git cms-merge-topic cms-pepr:pepr_${version}
 scram b -j 8
 
 # Note: Here follow the same instructions as in the main reco-prodtools repo, but use the D49 geometry
