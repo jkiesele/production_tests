@@ -1,7 +1,7 @@
 #!/bin/bash
 
 maxEvents=$1
-inputnumber=$2
+declare -i inputnumber=$2
 
 finalfile="${inputnumber}_nanoML.root"
 outdir="/eos/cms/store/user/kelong/ML4Reco/$3"
@@ -10,20 +10,32 @@ if [ ! -d $outdir ]; then
     mkdir $outdir
 fi
 
-numThreads=1
+nParticles=10
 if [ $# -gt 3 ]; then
-    numThreads=$4
+    nParticles=$4
 fi
 
-THISDIR=`pwd`
-#cmsswdir="/afs/cern.ch/user/k/kelong/work/ML4Reco/CMSSW_11_3_0_pre3/src"
-cmsswdir="/data/home/kelong/work/ML4Reco/CMSSW_11_3_0_pre3/src/"
-cd $cmsswdir
+echo "Processing $maxEvents events for seed $inputnumber"
+echo "    Gun of $nParticles particles"
+
+numThreads=1
+if [ $# -gt 4 ]; then
+    numThreads=$5
+fi
+
+pushd /afs/cern.ch/user/k/kelong/work/ML4Reco/CMSSW_11_3_0_pre3/src
 eval `scramv1 runtime -sh`
-cd $THISDIR
+popd
 
-scriptdir="${cmsswdir}/production_tests"
+gsd=${finalfile/.root/_GSD.root}
+recoout=${finalfile/.root/_RECO.root}
 
-cmsRun $scriptdir/nanoHGC_cfg.py seed=$inputnumber outputFile="file:$finalfile" maxEvents=$maxEvents nThreads=$numThreads
+cmsRun GSD_GUN.py seed=$inputnumber outputFile="file:$gsd" maxEvents=$maxEvents nThreads=$numThreads nParticles=$nParticles
+# Don't fully understand when it sticks numevent ont the end
+if [ ! -f $gsd ]; then
+    gsd=${finalfile/.root/_GSD_numEvent$1.root}
+fi
+cmsRun RECO.py inputFiles="file:$gsd" outputFile=$recoout nThreads=$numThreads
+cmsRun nanoML_cfg.py inputFiles=file:$recoout outputFile=file:$finalfile nThreads=$numThreads
 echo "${inputnumber} done"
-xrdcp ${finalfile/.root/_numEvent$2.root} $eosoutdir/$finalfile 
+xrdcp $finalfile $eosoutdir/$finalfile 

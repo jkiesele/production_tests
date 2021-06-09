@@ -10,6 +10,8 @@ from FWCore.ParameterSet.VarParsing import VarParsing
 process = cms.Process('NANO')
 options = VarParsing('python')
 options.setDefault('outputFile', 'testNanoML.root')
+options.register("nThreads", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+    "number of threads")
 options.parseArguments()
 
 # import of standard configurations
@@ -30,6 +32,7 @@ process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1),
     output = cms.optional.untracked.allowed(cms.int32,cms.PSet)
 )
+process.options.numberOfThreads=cms.untracked.uint32(options.nThreads)
 
 # Input source
 process.source = cms.Source("PoolSource",
