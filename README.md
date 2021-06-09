@@ -15,7 +15,7 @@ git cms-merge-topic cms-pepr:pepr_${version}
 scram b -j 8
 
 # Note: Here follow the same instructions as in the main reco-prodtools repo, but use the D49 geometry
-git clone git@github.com:CMS-HGCAL/reco-prodtools.git reco_prodtools
+git clone git@github.com:kdlong/reco-prodtools.git reco_prodtools
 cd reco_prodtools/templates/python
 ./produceSkeletons_D49_NoSmear_NoDQMNoHLT_PU_AVE_200_BX_25ns.sh
 cd ../../..
