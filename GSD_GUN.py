@@ -5,7 +5,6 @@ import math
 
 import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
-#from reco_prodtools.templates.GSD_fragment import process
 from reco_prodtools.templates.GSDfineCalo_fragment import process
 
 # option parsing

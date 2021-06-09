@@ -22,6 +22,7 @@ process.load('Configuration.Geometry.GeometryExtended2026D49Reco_cff')
 process.load('Configuration.Geometry.GeometryExtended2026D49_cff')
 process.load('Configuration.StandardSequences.MagneticField_cff')
 process.load('DPGAnalysis.HGCalNanoAOD.nanoHGCML_cff')
+process.load('Configuration.StandardSequences.Reconstruction_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
