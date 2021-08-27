@@ -19,18 +19,6 @@ process.maxEvents.input = cms.untracked.int32(options.maxEvents)
 
 process.load("SimTracker.TrackAssociation.trackingParticleRecoTrackAsssociation_cfi")
 # append the HGCTruthProducer to the recosim step
-process.trackingParticleMergedSCAssociation = cms.EDProducer("TrackingParticleSimClusterAssociationProducer",
-    simClusters = cms.InputTag("mix:MergedCaloTruth"),
-    trackingParticles= cms.InputTag("mix:MergedTrackTruth")
-
-)
-
-process.trackingParticleSimClusterAssociation = cms.EDProducer("TrackingParticleSimClusterAssociationProducer",
-    #simClusters = cms.InputTag("mix:MergedCaloTruth"),
-    simClusters = cms.InputTag("hgcSimTruth"),
-    trackingParticles= cms.InputTag("mix:MergedTrackTruth")
-
-)
 
 # If you want to run the associations or SC merging
 from SimCalorimetry.HGCalSimProducers.hgcHitAssociation_cfi import lcAssocByEnergyScoreProducer, scAssocByEnergyScoreProducer
@@ -50,14 +38,6 @@ process.assoc = cms.Sequence(process.hgcalAssociators)
 
 process.recosim_step *= process.assoc
 
-process.hgcRecHitsToSimClusters = cms.EDProducer("SimClusterRecHitAssociationProducer",
-    caloRecHits = cms.VInputTag("HGCalRecHit:HGCEERecHits",
-        "HGCalRecHit:HGCHEFRecHits", "HGCalRecHit:HGCHEBRecHits",
-    ),
-    simClusters = cms.InputTag("mix:MergedCaloTruth"),
-)
-
-process.recosim_step *= process.hgcRecHitsToSimClusters
 #process.dump=cms.EDAnalyzer('EventContentAnalyzer')
 #process.recosim_step += process.dump
 
@@ -70,8 +50,6 @@ process.FEVTDEBUGoutput.fileName = cms.untracked.string(
 process.FEVTDEBUGoutput.outputCommands.append("keep *_*G4*_*_*")
 process.FEVTDEBUGoutput.outputCommands.extend(["keep *_MergedTrackTruth_*_*",
     "keep *_trackingParticleRecoTrackAsssociation_*_*", 
-    "keep *_trackingParticleSimClusterAssociation_*_*",
-    "keep *_trackingParticleMergedSCAssociation_*_*", 
     "keep *_hgcRecHitsToSimClusters_*_*", 
     "keep SimClustersedmAssociation_mix_*_*", "keep CaloParticlesedmAssociation_mix_*_*", 
     "keep *_pfParticles_*_*",
