@@ -11,6 +11,7 @@ A simple recipe in CMSSW_12_0_0 is:
 version=CMSSW_12_0_0
 cmsrel $version
 cd $version/src
+cmsenv
 git cms-init
 git cms-merge-topic cms-pepr:pepr_${version}
 scram b -j 8
