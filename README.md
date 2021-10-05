@@ -3,7 +3,7 @@
 Simple productions scripts based on the HGCAL Reco prod tools: https://github.com/CMS-HGCAL/reco-prodtools
 
 
-NOTE: The NanoML ntuples require either pepr_CMSSW_12_0_0_pre3. A version working with more minimal changes is in progress
+NOTE: The NanoML ntuples require pepr_CMSSW_12_0_0 (some older pepr_CMSSW_X_Y_Z branches are available, if you prefer). A version working with more minimal changes is in progress
 
 A simple recipe in CMSSW_12_0_0 is:
 
