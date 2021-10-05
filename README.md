@@ -5,10 +5,10 @@ Simple productions scripts based on the HGCAL Reco prod tools: https://github.co
 
 NOTE: The NanoML ntuples require either pepr_CMSSW_12_0_0_pre3. A version working with more minimal changes is in progress
 
-A simple recipe in CMSSW_12_0_0_pre3 is:
+A simple recipe in CMSSW_12_0_0 is:
 
 ```shell
-version=CMSSW_12_0_0_pre3
+version=CMSSW_12_0_0
 cmsrel $version
 cd $version/src
 git cms-init
