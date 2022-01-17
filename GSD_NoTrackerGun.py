@@ -57,8 +57,9 @@ process.generator = cms.EDProducer("FlatEtaRangeNoTrackerGunProducer",
     # randomly shoot [1, nParticles] particles, each time randomly drawn from particleIDs
     randomShoot=cms.bool(False),
     # energy range
-    eMin=cms.double(20),
-    eMax=cms.double(200.0),
+    #eMin=cms.double(20),
+    #eMax=cms.double(200.0),
+    discreteEnergies = cms.untracked.vdouble(10., 50., 100., 200., 300.),
     # phi range
     phiMin=cms.double(-math.pi),
     phiMax=cms.double(math.pi),

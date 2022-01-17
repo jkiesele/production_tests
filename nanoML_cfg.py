@@ -12,6 +12,8 @@ options = VarParsing('python')
 options.setDefault('outputFile', 'testNanoML.root')
 options.register("nThreads", 1, VarParsing.multiplicity.singleton, VarParsing.varType.int,
     "number of threads")
+options.register("runPFTruth", 0, VarParsing.multiplicity.singleton, VarParsing.varType.int,
+    "Don't run PFTruth (currently not working with pileup)")
 options.parseArguments()
 
 # import of standard configurations
@@ -27,6 +29,10 @@ process.load('DPGAnalysis.HGCalNanoAOD.nanoHGCML_cff')
 process.load('Configuration.StandardSequences.Reconstruction_cff')
 process.load('Configuration.StandardSequences.EndOfProcess_cff')
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
+
+# This isn't working with pileup
+if not options.runPFTruth:
+    process.pfTruth = cms.Sequence()
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1),
