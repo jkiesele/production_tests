@@ -32,6 +32,7 @@ process.layerClusterSimClusterAssociationProducer = layerClusterCaloParticleAsso
 
 process.hgcalAssociators = cms.Task(process.lcAssocByEnergyScoreProducer, process.layerClusterCaloParticleAssociationProducer,
     process.scAssocByEnergyScoreProducer, process.layerClusterSimClusterAssociationProducer,
+    process.trackingParticleRecoTrackAsssociation
 )
 
 process.assoc = cms.Sequence(process.hgcalAssociators)
