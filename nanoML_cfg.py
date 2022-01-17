@@ -33,6 +33,7 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 # This isn't working with pileup
 if not options.runPFTruth:
     process.pfTruth = cms.Sequence()
+    process.trackSCAssocTable = cms.Sequence()
 
 process.maxEvents = cms.untracked.PSet(
     input = cms.untracked.int32(-1),
